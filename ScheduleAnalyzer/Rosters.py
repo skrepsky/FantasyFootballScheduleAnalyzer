@@ -31,3 +31,5 @@ class Rosters():
         for i in range(len(jsonObject)):
             self.RosterDict[jsonObject[i]["roster_id"]] = jsonObject[i]["owner_id"]
 
+    def GetOwnerFromRosterId(self,rosterId):
+        return self.RosterDict[rosterId]
