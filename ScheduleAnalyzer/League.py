@@ -119,9 +119,12 @@ class League:
                 self.MedianWins.populateMedianWinnersForWeek(week)
 
             self.MedianWins.giveWinsToTeams()
-        
-        value = 0
 
+    def teamsDictToArray(self):
+        """Take the dictionary and pass back an array of just teams
+        """
+
+        return list(self.TeamsDict.items())
 
 
 

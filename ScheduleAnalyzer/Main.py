@@ -1,5 +1,6 @@
 import requests
 import League
+from SimulatedSeason import SimulatedSeason
 
 def main():
     driver = Driver()
@@ -12,6 +13,10 @@ class Driver:
         league.populateTeams()
         league.populateMatchups()
         league.populateMedianWins()
+        
+        simSeason = SimulatedSeason(8,league.teamsDictToArray())
+        simSeason.simulateSeason()
+        print(simSeason)
 
 if __name__ == '__main__':
     main()
