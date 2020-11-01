@@ -16,6 +16,7 @@ class SimulatedSeason():
         for i in range(0, self.NumWeeks):
             self.playOutWeek(i, teamArray)
             self.advanceScheduleToNextWeek(teamArray)
+        self.evaluateSeason()
 
     def playOutWeek(self, weekIndex, teamArray):
         
@@ -60,6 +61,56 @@ class SimulatedSeason():
         newArray.extend(teamArray[1:len(teamArray)-2])
 
         return newArray
+
+    def evaluateSeason(self):
+
+        self.Teams = self.mergeSortBySimulatedWins(self.Teams)
+
+        midPoint = len(self.Teams) // 2
+        madePlayoffs = False
+        seed = 0
+
+        for i in range (0, len(self.Teams)):
+            if i < midPoint:
+                madePlayoffs =  False
+            seed = len(self.Teams) - i
+            self.Teams[i][1].addSeedAndReset(seed, madePlayoffs)
+
+    def mergeSortBySimulatedWins(self, teamArray: list):
+
+        if (len(teamArray) == 1):
+            return teamArray
+        midPoint = len(teamArray) // 2
+
+        leftArray = teamArray[midPoint:]
+        rightArray = teamArray[:midPoint]
+
+        leftArray = self.mergeSortBySimulatedWins(leftArray)
+        rightArray = self.mergeSortBySimulatedWins(rightArray)
+
+        mergeArray = []
+
+        leftCounter = 0
+        rightCounter = 0
+
+        while (leftCounter < len(leftArray)):
+            if rightCounter < len(rightArray):
+                if leftArray[leftCounter][1].getWinsTotal() < rightArray[rightCounter][1].getWinsTotal():
+                    mergeArray.append(leftArray[leftCounter])
+                    leftCounter += 1
+                else:
+                    mergeArray.append(rightArray[rightCounter])
+                    rightCounter += 1
+            else:
+                mergeArray.append(leftArray[leftCounter])
+                leftCounter += 1
+        remainingRightCounter = rightCounter
+
+        for rightCounter in range (remainingRightCounter, len(rightArray)):
+            mergeArray.append(rightArray[rightCounter])
+        
+        return mergeArray
+
 
             
 

@@ -3,9 +3,14 @@ class Team:
     DisplayName: str
     MatchupDict: dict
     MedianWin: int
-    SimulatedWins: int
-    SimulatedLosses: int
-    SimulatedTies: int
+    SimulatedSeasonWins: int
+    SimulatedSeasonLosses: int
+    SimulatedSeasonTies: int
+    TotalSimulatedSeasonWins: int
+    TotalSimulatedSeasonLosses: int
+    TotalSimulatedSeasonTies: int
+    TotalPlayoffAppearances: int
+    TotalPlayoffSeeds: int
 
     def __init__(self, userId: str, displayName: str):
 
@@ -13,7 +18,14 @@ class Team:
         self.DisplayName = displayName
         self.MatchupDict = {}
         self.MedianWin = 0
-        self.resetSimulatedWLT()
+        self.SimulatedSeasonWins = 0
+        self.SimulatedSeasonLosses = 0
+        self.SimulatedSeasonTies = 0
+        self.TotalSimulatedSeasonWins = 0
+        self.TotalSimulatedSeasonLosses = 0
+        self.TotalSimulatedSeasonTies = 0
+        self.TotalPlayoffAppearances = 0
+        self.TotalPlayoffSeeds = 0
     
     def addMatchupToDict(self, weekIndex, matchupId, points):
         self.MatchupDict[weekIndex] = {"matchupId" : matchupId, "points" : points}
@@ -25,18 +37,35 @@ class Team:
         self.MedianWin += 1
 
     def addSimulatedWin(self):
-        self.SimulatedWins += 1
+        self.SimulatedSeasonWins += 1
 
     def addSimulatedLoss(self):
-        self.SimulatedLosses += 1
+        self.SimulatedSeasonLosses += 1
 
     def addSimulatedTie(self):
-        self.SimulatedTies += 1
+        self.SimulatedSeasonTies += 1
 
-    def resetSimulatedWLT(self):
-        self.SimulatedWins = 0
-        self.SimulatedLosses = 0
-        self.SimulatedTies = 0
+    def getWinsTotal(self):
+        return 1 * self.SimulatedSeasonWins + .5 * self.SimulatedSeasonTies
+
+    def addSeedAndReset(self, seed:int, inPlayoffs: bool):
+        if (inPlayoffs):
+            self.TotalPlayoffAppearances += 1
+        
+        self.TotalPlayoffSeeds += seed
+
+        self.updateAndResetSimulatedWLT()
+
+
+    def updateAndResetSimulatedWLT(self):
+
+        self.TotalSimulatedSeasonWins += self.SimulatedSeasonWins
+        self.TotalSimulatedSeasonLosses += self.SimulatedSeasonLosses
+        self.TotalSimulatedSeasonTies += self.SimulatedSeasonTies
+
+        self.SimulatedSeasonWins = 0
+        self.SimulatedSeasonLosses = 0
+        self.SimulatedSeasonTies = 0
 
 
 
