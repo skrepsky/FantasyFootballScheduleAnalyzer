@@ -11,6 +11,9 @@ class Team:
     TotalSimulatedSeasonTies: int
     TotalPlayoffAppearances: int
     TotalPlayoffSeeds: int
+    ActualSeed: int
+    ActualWins: int
+
 
     def __init__(self, userId: str, displayName: str):
 
@@ -26,13 +29,21 @@ class Team:
         self.TotalSimulatedSeasonTies = 0
         self.TotalPlayoffAppearances = 0
         self.TotalPlayoffSeeds = 0
+        self.ActualSeed = 0 #TODO need to update
+        self.ActualWins = 0 
     
     def addMatchupToDict(self, weekIndex, matchupId, points):
         self.MatchupDict[weekIndex] = {"matchupId" : matchupId, "points" : points}
 
+    def AddWin(self,wonGame):
+        if wonGame:
+            self.ActualWins += 1
+
     def getPointsForWeek(self, weekIndex):
         return self.MatchupDict[weekIndex]["points"]
-
+    def getActualWins(self):
+        return self.ActualWins + self.MedianWin
+        
     def addMedianWin(self):
         self.MedianWin += 1
 
@@ -46,7 +57,7 @@ class Team:
         self.SimulatedSeasonTies += 1
 
     def getWinsTotal(self):
-        return 1 * self.SimulatedSeasonWins + .5 * self.SimulatedSeasonTies
+        return 1 * self.SimulatedSeasonWins + .5 * self.SimulatedSeasonTies + self.MedianWin
 
     def addSeedAndReset(self, seed:int, inPlayoffs: bool):
         if (inPlayoffs):

@@ -109,7 +109,21 @@ class League:
                 team = self.TeamsDict[ownerId]
                 team.addMatchupToDict(weekIndex, matchupId, points)
                 self.Weeks[weekIndex].addTeamToDict(points, team)
-    
+                team.AddWin(self.wonMatchup(j, rawMatchup))
+    def wonMatchup(self, index, matchup):
+        
+        matchupId = matchup[index]['matchup_id']
+        points = matchup[index]['points']
+        for i in range(len(matchup)):
+            if index == i:
+                continue
+            elif matchupId == matchup[i]['matchup_id']:
+                if matchup[i]['points'] < points:
+                    return True
+                else:
+                    return False
+        return False
+
     def populateMedianWins(self):
         """Take the weeks object, and populate the median wins object with the info
         """
@@ -124,7 +138,63 @@ class League:
         """Take the dictionary and pass back an array of just teams
         """
 
-        return list(self.TeamsDict.items())
+        teamArray = []
+
+        arrays = list(self.TeamsDict.items())
+
+        for i in range(len(arrays)):
+            team = arrays[i][1]
+            teamArray.append(team)
+
+        return teamArray
+
+    def populateOriginalSeeds(self):
+        teamArray = self.teamsDictToArray()
+
+        teamArray = self.mergeSortTeamByWins(teamArray)
+
+        for i in range(len(teamArray)):
+            teamArray[i].ActualSeed = (i + 1)
+
+
+    def mergeSortTeamByWins(self, teamArray):
+
+        if (len(teamArray) == 1):
+            return teamArray
+        
+        midPoint = len(teamArray) // 2
+
+        leftArray = teamArray[midPoint:]
+        rightArray = teamArray[:midPoint]
+
+        leftArray = self.mergeSortTeamByWins(leftArray)
+        rightArray = self.mergeSortTeamByWins(rightArray)
+
+        mergedArray = []
+
+        leftCounter = 0
+        rightCounter = 0
+
+        while (leftCounter < len(leftArray)):
+            if (rightCounter < len(rightArray)):
+                if (leftArray[leftCounter].getActualWins() > rightArray[rightCounter].getActualWins()):
+                    mergedArray.append(leftArray[leftCounter])
+                    leftCounter += 1
+                else:
+                    mergedArray.append(rightArray[rightCounter])
+                    rightCounter += 1
+            else:
+                mergedArray.append(leftArray[leftCounter])
+                leftCounter += 1
+        remainingRightCounter = rightCounter
+        for rightCounter in range(remainingRightCounter, len(rightArray)):
+            mergedArray.append(rightArray[rightCounter])
+            rightCounter += 1
+
+        return mergedArray
+
+
+
 
 
 

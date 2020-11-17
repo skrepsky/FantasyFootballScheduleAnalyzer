@@ -21,8 +21,8 @@ class SimulatedSeason():
     def playOutWeek(self, weekIndex, teamArray):
         
         for i in range(0, len(teamArray), 2):
-            team1 = teamArray[i][1]
-            team2 = teamArray[i+1][1]
+            team1 = teamArray[i]
+            team2 = teamArray[i+1]
             self.calculateWLT(weekIndex, team1, team2)
 
 
@@ -73,8 +73,10 @@ class SimulatedSeason():
         for i in range (0, len(self.Teams)):
             if i < midPoint:
                 madePlayoffs =  False
+            else:
+                madePlayoffs = True
             seed = len(self.Teams) - i
-            self.Teams[i][1].addSeedAndReset(seed, madePlayoffs)
+            self.Teams[i].addSeedAndReset(seed, madePlayoffs)
 
     def mergeSortBySimulatedWins(self, teamArray: list):
 
@@ -95,7 +97,7 @@ class SimulatedSeason():
 
         while (leftCounter < len(leftArray)):
             if rightCounter < len(rightArray):
-                if leftArray[leftCounter][1].getWinsTotal() < rightArray[rightCounter][1].getWinsTotal():
+                if leftArray[leftCounter].getWinsTotal() < rightArray[rightCounter].getWinsTotal():
                     mergeArray.append(leftArray[leftCounter])
                     leftCounter += 1
                 else:
