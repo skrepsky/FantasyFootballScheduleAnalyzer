@@ -1,3 +1,4 @@
+from MedianWins import MedianWins
 import Team
 
 class SimulatedSeason():
@@ -16,6 +17,17 @@ class SimulatedSeason():
         for i in range(0, self.NumWeeks):
             self.playOutWeek(i, teamArray)
             self.advanceScheduleToNextWeek(teamArray)
+
+        for i in range(len(teamArray)):
+            if teamArray[i].DisplayName == 'plammert':
+                wins = teamArray[i].MedianWin + teamArray[i].SimulatedSeasonWins
+                if wins < 14:
+                    print(wins)
+                    for weekIndex in range(self.NumWeeks):
+                        matchupId = teamArray[i].MatchupDict[weekIndex].matchupId
+                        for possibleOpponent in range(len(teamArray)):
+                            
+                    
         self.evaluateSeason()
 
     def playOutWeek(self, weekIndex, teamArray):

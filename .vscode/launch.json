@@ -1,10 +1,7 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-<<<<<<< HEAD
+
         {
             "name": "Python: ScheduleAnalyzerSleeper",
             "type": "python",
@@ -53,7 +50,7 @@
                 "--noreload",
                 "--nothreading"
             ],
-            "django": true
+            "django": "true"
         },
         {
             "name": "Python: Flask",
@@ -68,7 +65,7 @@
                 "--no-debugger",
                 "--no-reload"
             ],
-            "jinja": true
+            "jinja": "true"
         },
         {
             "name": "Python: Current File (External Terminal)",

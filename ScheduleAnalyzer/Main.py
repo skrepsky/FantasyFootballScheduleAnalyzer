@@ -13,7 +13,7 @@ class Driver:
 
         leagueId = '605590064432504832'
         year = 2020
-        numWeeksCompleted = 8
+        numWeeksCompleted = 10
         numSimulations = 10000
 
         league = League.League(leagueId,year,numWeeksCompleted)
